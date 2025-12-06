@@ -9,6 +9,9 @@ interface AuthStore {
   token: string | null
   setToken: (token: string | null) => void
   login: (payload: Pick<User, 'email' | 'password'>) => Promise<void>
+  register: (
+    payload: Pick<User, 'username' | 'email' | 'password'>,
+  ) => Promise<void>
   logout: () => void
   isAuthenticated: boolean
 }
@@ -21,6 +24,12 @@ const useAuthStore = create<AuthStore>()(
         setUser: (user) => set({ user }),
         token: null,
         setToken: (token) => set({ token }),
+        register: async (
+          payload: Pick<User, 'username' | 'email' | 'password'>,
+        ) => {
+          const { user, token } = await authService.register(payload)
+          set({ user, token, isAuthenticated: true })
+        },
         login: async (payload: Pick<User, 'email' | 'password'>) => {
           const { user, token } = await authService.login(payload)
           set({ user, token, isAuthenticated: true })
