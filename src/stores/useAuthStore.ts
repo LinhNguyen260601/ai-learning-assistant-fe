@@ -28,23 +28,34 @@ const useAuthStore = create<AuthStore>()(
           payload: Pick<User, 'username' | 'email' | 'password'>,
         ) => {
           const { user, token } = await authService.register(payload)
-          set({ user, token, isAuthenticated: true })
+          set({ user, token })
         },
         login: async (payload: Pick<User, 'email' | 'password'>) => {
           const { user, token } = await authService.login(payload)
-          set({ user, token, isAuthenticated: true })
+          set({ user, token })
         },
-        logout: () => set({ user: null, token: null, isAuthenticated: false }),
+        logout: () => set({ user: null, token: null }),
         get isAuthenticated() {
-          return !!get().token
+          try {
+            const state = get()
+            return !!state?.token
+          } catch {
+            return false
+          }
         },
       }
     },
     {
       name: 'auth-storage',
-      partialize: (state) => ({ user: state.user, token: state.token }),
-      onRehydrateStorage: () => (state) => {
-        if (state?.token) state.isAuthenticated = true
+      partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+      }),
+      onRehydrateStorage: () => (_state, error) => {
+        if (error) {
+          console.error('Error rehydrating auth store:', error)
+          return
+        }
       },
     },
   ),
