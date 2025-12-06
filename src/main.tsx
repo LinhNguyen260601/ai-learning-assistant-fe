@@ -1,22 +1,24 @@
+import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
 
 import * as TanStackQueryProvider from './integrations/tanstack-query/root-provider.tsx'
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 
-import './styles.css'
+import { AntdConfigProvider } from '@/integrations/antd/root-provider.tsx'
 import reportWebVitals from './reportWebVitals.ts'
-
-// Create a new router instance
+import './styles.css'
+import useAuthStore from '@/stores/useAuthStore.ts'
+import type { MyRouterContext } from '@/routes/__root.tsx'
 
 const TanStackQueryProviderContext = TanStackQueryProvider.getContext()
 const router = createRouter({
   routeTree,
   context: {
     ...TanStackQueryProviderContext,
+    auth: useAuthStore.getState(),
   },
   defaultPreload: 'intent',
   scrollRestoration: true,
@@ -35,10 +37,18 @@ declare module '@tanstack/react-router' {
 const rootElement = document.getElementById('app')
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
+  const auth = useAuthStore.getState()
+
+  const routerContext: Partial<MyRouterContext> = {
+    auth,
+  }
+
   root.render(
     <StrictMode>
       <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
-        <RouterProvider router={router} />
+        <AntdConfigProvider>
+          <RouterProvider router={router} context={routerContext} />
+        </AntdConfigProvider>
       </TanStackQueryProvider.Provider>
     </StrictMode>,
   )

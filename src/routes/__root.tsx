@@ -8,8 +8,10 @@ import {
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
 import type { QueryClient } from '@tanstack/react-query'
+import type { useAuthStore } from '@/stores'
 
-interface MyRouterContext {
+export interface MyRouterContext {
+  auth: ReturnType<typeof useAuthStore.getState>
   queryClient: QueryClient
 }
 
