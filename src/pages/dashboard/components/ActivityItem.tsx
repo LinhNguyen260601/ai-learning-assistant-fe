@@ -7,7 +7,7 @@ const { Text } = Typography
 export type ActivityType = 'document' | 'quiz'
 export type ActivityColor = 'blue' | 'green'
 
-interface ActivityItemProps {
+export interface ActivityItemProps {
   id: string
   title: string
   date: Date | null

@@ -10,6 +10,7 @@ const MainLayout = () => {
     isMobile,
     collapsed,
     handleMenuClick,
+    handleSidebarOpen,
     handleLogoutClick,
     handleProfileClick,
     handleToggleSidebar,
@@ -22,7 +23,7 @@ const MainLayout = () => {
       {isMobile && !collapsed && (
         <div
           className="fixed inset-0 bg-black/50 z-[100] transition-opacity"
-          onClick={handleMenuClick}
+          onClick={handleSidebarOpen}
           aria-hidden="true"
         />
       )}
