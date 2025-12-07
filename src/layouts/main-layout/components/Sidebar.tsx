@@ -52,7 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       collapsedWidth={isMobile ? 0 : 80}
       width={256}
       className={cn(
-        'h-screen',
+        'h-[calc(100vh-64px)]',
         isMobile && 'fixed! left-0! top-0! z-[101] transition-transform!',
         isMobile && collapsed && '-translate-x-full',
       )}

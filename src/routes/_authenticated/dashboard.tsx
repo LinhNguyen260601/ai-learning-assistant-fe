@@ -1,9 +1,15 @@
+import { QUERY_KEY } from '@/constants'
+import { Dashboard } from '@/pages'
+import { DashboardSkeleton } from '@/pages/dashboard/components'
+import { dashboardService } from '@/services'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/dashboard')({
-  component: RouteComponent,
+  component: Dashboard,
+  loader: ({ context }) =>
+    context.queryClient.ensureQueryData({
+      queryKey: [QUERY_KEY.DASHBOARD],
+      queryFn: () => dashboardService.getDashboard(),
+    }),
+  pendingComponent: DashboardSkeleton,
 })
-
-function RouteComponent() {
-  return <div>Hello "/_authenticated/index/dashboard"!</div>
-}
