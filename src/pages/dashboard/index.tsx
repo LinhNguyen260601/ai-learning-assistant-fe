@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Card, Typography } from 'antd'
 import { BookOpen, ClipboardCheck, Clock, FileText } from 'lucide-react'
 import isEmpty from 'lodash/isEmpty'
+import type { ActivityItemProps } from '@/pages/dashboard/components/ActivityItem'
 
 const { Title, Text } = Typography
 
@@ -20,7 +21,7 @@ const Dashboard = () => {
         title: doc.title,
         date: new Date(doc.lastAccessed),
         color: 'blue',
-      })) as ActivityItem[]
+      })) as ActivityItemProps[]
 
       const normarlizedQuizzes = res.recentActivity.quizzes?.map((quiz) => ({
         id: quiz._id,
@@ -28,7 +29,7 @@ const Dashboard = () => {
         title: quiz.title,
         date: new Date(quiz.completedAt),
         color: 'green',
-      })) as ActivityItem[]
+      })) as ActivityItemProps[]
 
       return {
         overview: res.overview,

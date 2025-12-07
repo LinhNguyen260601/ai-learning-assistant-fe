@@ -9,7 +9,7 @@ interface SidebarProps {
   collapsed: boolean
   isMobile: boolean
   onToggle: () => void
-  onMenuClick: () => void
+  onMenuClick: ({ key }: { key: string }) => void
 }
 
 export const MENU_ITEMS: ItemType<MenuItemType>[] = [

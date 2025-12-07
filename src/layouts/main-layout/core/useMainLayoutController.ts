@@ -16,7 +16,13 @@ export const useMainLayoutController = () => {
 
   const handleToggleSidebar = () => toggle()
 
-  const handleMenuClick = () => isMobile && open()
+  const handleMenuClick = ({ key }: { key: string }) => {
+    navigate({ to: key })
+  }
+
+  const handleSidebarOpen = () => {
+    isMobile && open()
+  }
 
   const handleNotificationClick = useCallback(() => {}, [])
 
@@ -32,6 +38,7 @@ export const useMainLayoutController = () => {
     isMobile,
     collapsed,
     handleMenuClick,
+    handleSidebarOpen,
     handleLogoutClick,
     handleProfileClick,
     handleToggleSidebar,
