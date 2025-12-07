@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores'
 import axios, { AxiosError } from 'axios'
 
 const axiosInstance = axios.create({
@@ -6,7 +7,7 @@ const axiosInstance = axios.create({
 })
 
 const createHeaderToken = () => {
-  const token = ''
+  const token = useAuthStore.getState().token
   return token ? `Bearer ${token}` : ''
 }
 
