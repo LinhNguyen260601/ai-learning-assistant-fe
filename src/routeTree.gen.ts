@@ -36,7 +36,9 @@ const AuthenticatedDocumentsRoute = AuthenticatedDocumentsRouteImport.update({
   id: '/documents',
   path: '/documents',
   getParentRoute: () => AuthenticatedRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/_authenticated/documents.lazy').then((d) => d.Route),
+)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',

@@ -12,6 +12,7 @@ import reportWebVitals from './reportWebVitals.ts'
 import './styles.css'
 import useAuthStore from '@/stores/useAuthStore.ts'
 import type { MyRouterContext } from '@/routes/__root.tsx'
+import { Error, NotFound } from '@/pages/index.ts'
 
 const TanStackQueryProviderContext = TanStackQueryProvider.getContext()
 const router = createRouter({
@@ -24,6 +25,8 @@ const router = createRouter({
   scrollRestoration: true,
   defaultStructuralSharing: true,
   defaultPreloadStaleTime: 0,
+  defaultErrorComponent: Error,
+  defaultNotFoundComponent: NotFound,
 })
 
 // Register the router instance for type safety
