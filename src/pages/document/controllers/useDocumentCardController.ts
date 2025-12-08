@@ -1,13 +1,11 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useCallback } from 'react'
 import { QUERY_KEY } from '@/constants'
 import { useToggle } from '@/hooks'
 import { documentsService } from '@/services'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
-import React, { useCallback } from 'react'
 
-const useDocumentCardController = (documentId: string, onOpen: () => void) => {
+const useDocumentCardController = (documentId: string) => {
   const { value: isDeleteModalOpen, open, close } = useToggle(false)
-  const navigate = useNavigate()
   const queryClient = useQueryClient()
 
   const { mutate: deleteDocumentMutation, isPending: isDeleting } = useMutation(
@@ -19,17 +17,12 @@ const useDocumentCardController = (documentId: string, onOpen: () => void) => {
     },
   )
 
-  const handleCardClick = () => {
-    onOpen()
-    navigate({ to: '/documents', search: { documentId } })
-  }
-
   const handleDeleteClick = (event: React.MouseEvent) => {
     event.stopPropagation()
     open()
   }
 
-  const handleDeleteConfirm = useCallback(async () => {
+  const handleDeleteConfirm = useCallback(() => {
     deleteDocumentMutation(documentId)
   }, [deleteDocumentMutation, documentId])
 
@@ -40,7 +33,6 @@ const useDocumentCardController = (documentId: string, onOpen: () => void) => {
   return {
     isDeleting,
     isDeleteModalOpen,
-    handleCardClick,
     handleDeleteClick,
     handleDeleteConfirm,
     handleDeleteCancel,

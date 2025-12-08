@@ -1,9 +1,10 @@
-import { cn } from '@/utils'
 import { useLocation } from '@tanstack/react-router'
 import { Button, Menu } from 'antd'
 import Sider from 'antd/es/layout/Sider'
-import type { ItemType, MenuItemType } from 'antd/es/menu/interface'
 import { BookOpen, FileText, LayoutDashboard, UserRound, X } from 'lucide-react'
+import isString from 'lodash/isString'
+import type { ItemType, MenuItemType } from 'antd/es/menu/interface'
+import { cn } from '@/utils'
 
 interface SidebarProps {
   collapsed: boolean
@@ -12,7 +13,7 @@ interface SidebarProps {
   onMenuClick: ({ key }: { key: string }) => void
 }
 
-export const MENU_ITEMS: ItemType<MenuItemType>[] = [
+export const MENU_ITEMS: Array<ItemType<MenuItemType>> = [
   {
     key: '/dashboard',
     icon: <LayoutDashboard />,
@@ -42,6 +43,24 @@ const Sidebar: React.FC<SidebarProps> = ({
   onMenuClick,
 }) => {
   const currentPath = useLocation().pathname
+
+  const getSelectedKey = (): string => {
+    // First, try exact match
+    const exactMatch = MENU_ITEMS.find((item) => item?.key === currentPath)
+    if (exactMatch?.key && isString(exactMatch.key)) return exactMatch.key
+
+    // Then, try prefix match (for child routes like /documents/$id)
+    const prefixMatch = MENU_ITEMS.find(
+      (item) =>
+        item?.key &&
+        isString(item.key) &&
+        currentPath.startsWith(item.key + '/'),
+    )
+    if (prefixMatch?.key && isString(prefixMatch.key)) return prefixMatch.key
+    return currentPath
+  }
+
+  const selectedKey = getSelectedKey()
 
   return (
     <Sider
@@ -75,8 +94,8 @@ const Sidebar: React.FC<SidebarProps> = ({
       <Menu
         theme="light"
         mode="inline"
-        defaultSelectedKeys={[currentPath]}
-        selectedKeys={[currentPath]}
+        defaultSelectedKeys={[selectedKey]}
+        selectedKeys={[selectedKey]}
         className="h-full pt-4!"
         items={MENU_ITEMS}
         onClick={onMenuClick}

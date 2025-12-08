@@ -4,6 +4,13 @@ export enum DocumentStatus {
   FAILED = 'failed',
 }
 
+export interface DocumentChunk {
+  content: string
+  pageNumber: number
+  chunkIndex: number
+  _id: string
+}
+
 export interface Document {
   _id: string
   userId: string
@@ -16,4 +23,6 @@ export interface Document {
   flashcardCount: number
   quizCount: number
   uploadDate: string
+  extractedText?: string
+  chunks?: Array<DocumentChunk>
 }
