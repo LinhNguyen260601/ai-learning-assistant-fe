@@ -13,10 +13,15 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
-import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
 const RegisterLazyRouteImport = createFileRoute('/register')()
+const AuthenticatedDocumentsLazyRouteImport = createFileRoute(
+  '/_authenticated/documents',
+)()
+const AuthenticatedDocumentsIdLazyRouteImport = createFileRoute(
+  '/_authenticated/documents/$id',
+)()
 
 const RegisterLazyRoute = RegisterLazyRouteImport.update({
   id: '/register',
@@ -32,30 +37,41 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedDocumentsRoute = AuthenticatedDocumentsRouteImport.update({
-  id: '/documents',
-  path: '/documents',
-  getParentRoute: () => AuthenticatedRoute,
-} as any).lazy(() =>
-  import('./routes/_authenticated/documents.lazy').then((d) => d.Route),
-)
+const AuthenticatedDocumentsLazyRoute =
+  AuthenticatedDocumentsLazyRouteImport.update({
+    id: '/documents',
+    path: '/documents',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/documents/lazy').then((d) => d.Route),
+  )
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedDocumentsIdLazyRoute =
+  AuthenticatedDocumentsIdLazyRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedDocumentsLazyRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/documents/$id.lazy').then((d) => d.Route),
+  )
 
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterLazyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/documents': typeof AuthenticatedDocumentsRoute
+  '/documents': typeof AuthenticatedDocumentsLazyRouteWithChildren
+  '/documents/$id': typeof AuthenticatedDocumentsIdLazyRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterLazyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/documents': typeof AuthenticatedDocumentsRoute
+  '/documents': typeof AuthenticatedDocumentsLazyRouteWithChildren
+  '/documents/$id': typeof AuthenticatedDocumentsIdLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -63,13 +79,19 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterLazyRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/documents': typeof AuthenticatedDocumentsRoute
+  '/_authenticated/documents': typeof AuthenticatedDocumentsLazyRouteWithChildren
+  '/_authenticated/documents/$id': typeof AuthenticatedDocumentsIdLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/register' | '/dashboard' | '/documents'
+  fullPaths:
+    | '/login'
+    | '/register'
+    | '/dashboard'
+    | '/documents'
+    | '/documents/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/register' | '/dashboard' | '/documents'
+  to: '/login' | '/register' | '/dashboard' | '/documents' | '/documents/$id'
   id:
     | '__root__'
     | '/_authenticated'
@@ -77,6 +99,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/_authenticated/dashboard'
     | '/_authenticated/documents'
+    | '/_authenticated/documents/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -112,7 +135,7 @@ declare module '@tanstack/react-router' {
       id: '/_authenticated/documents'
       path: '/documents'
       fullPath: '/documents'
-      preLoaderRoute: typeof AuthenticatedDocumentsRouteImport
+      preLoaderRoute: typeof AuthenticatedDocumentsLazyRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/dashboard': {
@@ -122,17 +145,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/documents/$id': {
+      id: '/_authenticated/documents/$id'
+      path: '/$id'
+      fullPath: '/documents/$id'
+      preLoaderRoute: typeof AuthenticatedDocumentsIdLazyRouteImport
+      parentRoute: typeof AuthenticatedDocumentsLazyRoute
+    }
   }
 }
 
+interface AuthenticatedDocumentsLazyRouteChildren {
+  AuthenticatedDocumentsIdLazyRoute: typeof AuthenticatedDocumentsIdLazyRoute
+}
+
+const AuthenticatedDocumentsLazyRouteChildren: AuthenticatedDocumentsLazyRouteChildren =
+  {
+    AuthenticatedDocumentsIdLazyRoute: AuthenticatedDocumentsIdLazyRoute,
+  }
+
+const AuthenticatedDocumentsLazyRouteWithChildren =
+  AuthenticatedDocumentsLazyRoute._addFileChildren(
+    AuthenticatedDocumentsLazyRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedDocumentsRoute: typeof AuthenticatedDocumentsRoute
+  AuthenticatedDocumentsLazyRoute: typeof AuthenticatedDocumentsLazyRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedDocumentsRoute: AuthenticatedDocumentsRoute,
+  AuthenticatedDocumentsLazyRoute: AuthenticatedDocumentsLazyRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

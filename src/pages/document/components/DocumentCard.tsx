@@ -1,32 +1,28 @@
-import { useDocumentCardController } from '@/pages/document/controllers'
-import type { Document } from '@/types'
-import { formatFileSize, formatRelativeTime } from '@/utils/format'
+import { Link } from '@tanstack/react-router'
 import { Card, Modal, Tag, Typography } from 'antd'
 import { BookOpen, Clock, FileText, Lightbulb, Trash2 } from 'lucide-react'
+import type { Document } from '@/types'
+import { formatFileSize, formatRelativeTime } from '@/utils/format'
+import { useDocumentCardController } from '@/pages/document/controllers'
 
 const { Title, Text } = Typography
 
 interface DocumentCardProps {
   document: Document
-  onOpen: () => void
 }
 
-const DocumentCard = ({ document, onOpen }: DocumentCardProps) => {
+const DocumentCard = ({ document }: DocumentCardProps) => {
   const {
     isDeleting,
     isDeleteModalOpen,
-    handleCardClick,
     handleDeleteClick,
     handleDeleteConfirm,
     handleDeleteCancel,
-  } = useDocumentCardController(document._id, onOpen)
+  } = useDocumentCardController(document._id)
 
   return (
-    <>
-      <Card
-        className="shadow-sm hover:shadow-md transition-shadow cursor-pointer relative group"
-        onClick={handleCardClick}
-      >
+    <Link to="/documents/$id" params={{ id: document._id }}>
+      <Card className="shadow-sm hover:shadow-md transition-shadow cursor-pointer relative group">
         <button
           type="button"
           onClick={handleDeleteClick}
@@ -95,7 +91,7 @@ const DocumentCard = ({ document, onOpen }: DocumentCardProps) => {
           This action cannot be undone.
         </p>
       </Modal>
-    </>
+    </Link>
   )
 }
 
