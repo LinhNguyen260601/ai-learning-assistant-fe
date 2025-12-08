@@ -1,9 +1,10 @@
-import axiosInstance from '@/integrations/axios/axios-instance'
-import type { API } from '@/types'
 import { message } from 'antd'
-import { AxiosError, type AxiosResponse } from 'axios'
+import { AxiosError } from 'axios'
 import isArray from 'lodash/isArray'
 import isString from 'lodash/isString'
+import type { AxiosResponse } from 'axios'
+import type { API } from '@/types'
+import axiosInstance from '@/integrations/axios/axios-instance'
 
 /**
  * Extracts a  error message from an AxiosError.
@@ -60,7 +61,7 @@ export const apiCall = async <TRequest = any, TResponse = any>({
 
   try {
     const response = await request()
-    return response.data as TResponse
+    return response.data
   } catch (error) {
     if (isShowError)
       message.open({

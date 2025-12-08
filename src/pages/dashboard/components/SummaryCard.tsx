@@ -1,5 +1,5 @@
-import { cn } from '@/utils'
 import { Card, Typography } from 'antd'
+import { cn } from '@/utils'
 
 const { Title, Text } = Typography
 

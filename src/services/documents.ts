@@ -1,7 +1,7 @@
+import { message } from 'antd'
 import type { DocumentsResponse } from '@/pages/document/core'
 import type { ApiReponse, Document } from '@/types'
 import { apiCall } from '@/utils'
-import { message } from 'antd'
 
 const DocumentsService = {
   getDocuments: async (): Promise<DocumentsResponse> => {
@@ -26,7 +26,7 @@ const DocumentsService = {
       method: 'DELETE',
     })
     if (!response?.success) throw new Error(response?.message)
-    message.success(response?.message)
+    message.success(response.message)
   },
   uploadDocument: async (payload: {
     title: string

@@ -1,9 +1,9 @@
-import { Sidebar, TopBar } from '@/layouts/main-layout/components'
-import { useMainLayoutController } from '@/layouts/main-layout/core'
-import { cn } from '@/utils'
 import { Outlet } from '@tanstack/react-router'
 import { Layout } from 'antd'
 import { Content } from 'antd/es/layout/layout'
+import { Sidebar, TopBar } from '@/layouts/main-layout/components'
+import { useMainLayoutController } from '@/layouts/main-layout/core'
+import { cn } from '@/utils'
 
 const MainLayout = () => {
   const {

@@ -1,6 +1,6 @@
+import { message } from 'antd'
 import type { ApiReponse, User } from '@/types'
 import { apiCall } from '@/utils'
-import { message } from 'antd'
 
 const AuthService = {
   register: async (
@@ -15,7 +15,7 @@ const AuthService = {
       data: payload,
     })
     if (!response?.success) throw new Error(response?.message)
-    message.success(response?.message)
+    message.success(response.message)
     return response.data
   },
   login: async (
@@ -30,7 +30,7 @@ const AuthService = {
       data: payload,
     })
     if (!response?.success) throw new Error(response?.message)
-    message.success(response?.message)
+    message.success(response.message)
     return response.data
   },
 }

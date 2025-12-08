@@ -4,7 +4,7 @@ export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 export interface API<T> {
   url: string
-  data?: T | T[]
+  data?: T | Array<T>
   method: RequestMethod
   config?: AxiosRequestConfig<any> | undefined
   isShowError?: boolean

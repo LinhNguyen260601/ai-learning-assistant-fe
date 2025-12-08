@@ -1,9 +1,9 @@
-import { useAuthStore } from '@/stores'
-import type { User } from '@/types'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Form } from 'antd'
 import { useCallback } from 'react'
+import type { User } from '@/types'
+import { useAuthStore } from '@/stores'
 
 export const useRegisterController = () => {
   const [form] = Form.useForm()

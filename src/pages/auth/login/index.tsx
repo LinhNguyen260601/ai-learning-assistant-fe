@@ -1,12 +1,12 @@
-import {
-  PASSWORD_FORM_RULES,
-  useLoginController,
-  USER_FORM_RULES,
-} from '@/pages/auth/login/core'
-import { hasFormErrors } from '@/utils'
 import { Link } from '@tanstack/react-router'
 import { Button, Form, Input } from 'antd'
 import { UserRound } from 'lucide-react'
+import { hasFormErrors } from '@/utils'
+import {
+  PASSWORD_FORM_RULES,
+  USER_FORM_RULES,
+  useLoginController,
+} from '@/pages/auth/login/core'
 
 const Login = () => {
   const { form, onFinish, isPending } = useLoginController()

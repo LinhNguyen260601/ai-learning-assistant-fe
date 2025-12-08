@@ -1,11 +1,11 @@
-import { QUERY_KEY } from '@/constants'
-import { ActivityItem, SummaryCard } from '@/pages/dashboard/components'
-import { dashboardService } from '@/services'
 import { useQuery } from '@tanstack/react-query'
 import { Card, Typography } from 'antd'
 import { BookOpen, ClipboardCheck, Clock, FileText } from 'lucide-react'
 import isEmpty from 'lodash/isEmpty'
 import type { ActivityItemProps } from '@/pages/dashboard/components/ActivityItem'
+import { dashboardService } from '@/services'
+import { ActivityItem, SummaryCard } from '@/pages/dashboard/components'
+import { QUERY_KEY } from '@/constants'
 
 const { Title, Text } = Typography
 
@@ -15,21 +15,21 @@ const Dashboard = () => {
     queryFn: () => dashboardService.getDashboard(),
     refetchOnMount: (query) => !query.state.data,
     select: (res) => {
-      const normarlizedDocuments = res.recentActivity.documents?.map((doc) => ({
+      const normarlizedDocuments = res.recentActivity.documents.map((doc) => ({
         id: doc._id,
         type: 'document',
         title: doc.title,
         date: new Date(doc.lastAccessed),
         color: 'blue',
-      })) as ActivityItemProps[]
+      })) as Array<ActivityItemProps>
 
-      const normarlizedQuizzes = res.recentActivity.quizzes?.map((quiz) => ({
+      const normarlizedQuizzes = res.recentActivity.quizzes.map((quiz) => ({
         id: quiz._id,
         type: 'quiz',
         title: quiz.title,
         date: new Date(quiz.completedAt),
         color: 'green',
-      })) as ActivityItemProps[]
+      })) as Array<ActivityItemProps>
 
       return {
         overview: res.overview,

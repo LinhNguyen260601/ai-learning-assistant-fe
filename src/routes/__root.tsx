@@ -1,11 +1,8 @@
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import {
-  TanStackDevtools,
-  type TanStackDevtoolsReactPlugin,
-} from '@tanstack/react-devtools'
-
+import { TanStackDevtools } from '@tanstack/react-devtools'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
+import type { TanStackDevtoolsReactPlugin } from '@tanstack/react-devtools'
 
 import type { QueryClient } from '@tanstack/react-query'
 import type { useAuthStore } from '@/stores'
@@ -31,13 +28,14 @@ const tanStackConfig:
   position: 'bottom-right',
 }
 
-const tackStackDevtoolsPlugins: TanStackDevtoolsReactPlugin[] | undefined = [
-  {
-    name: 'Tanstack Router',
-    render: <TanStackRouterDevtoolsPanel />,
-  },
-  TanStackQueryDevtools,
-]
+const tackStackDevtoolsPlugins: Array<TanStackDevtoolsReactPlugin> | undefined =
+  [
+    {
+      name: 'Tanstack Router',
+      render: <TanStackRouterDevtoolsPanel />,
+    },
+    TanStackQueryDevtools,
+  ]
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (

@@ -18,6 +18,7 @@ const DocumentDetails = () => {
   } = useQuery({
     queryKey: [QUERY_KEY.DOCUMENT, id],
     queryFn: () => documentsService.getDocument(id),
+    enabled: !!id,
   })
 
   if (isLoading) {

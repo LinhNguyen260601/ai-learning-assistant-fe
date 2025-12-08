@@ -1,6 +1,7 @@
-import { cn, formatDate } from '@/utils'
+import { Link } from '@tanstack/react-router'
 import { Button, Typography } from 'antd'
 import { useCallback } from 'react'
+import { cn, formatDate } from '@/utils'
 
 const { Text } = Typography
 
@@ -27,7 +28,11 @@ const ActivityItem = ({ item }: { item: ActivityItemProps }) => {
   }
 
   return (
-    <div className="flex items-start justify-between py-4 px-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer">
+    <Link
+      to="/documents/$id"
+      params={{ id: item.id }}
+      className="flex items-start justify-between py-4 px-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
+    >
       <div className="flex items-start gap-3 flex-1">
         <div
           className={cn(
@@ -51,7 +56,7 @@ const ActivityItem = ({ item }: { item: ActivityItemProps }) => {
       >
         View
       </Button>
-    </div>
+    </Link>
   )
 }
 

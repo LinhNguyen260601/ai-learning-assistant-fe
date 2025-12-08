@@ -10,7 +10,7 @@ export const getAuthToken = (): string | null => {
   try {
     // First, try to get from the store (this should work with create() and persist)
     const storeState = useAuthStore.getState()
-    if (storeState?.token) return storeState.token
+    if (storeState.token) return storeState.token
 
     // Fallback: read directly from localStorage (for rehydration timing issues)
     // Zustand persist stores data as: { state: { user, token }, version: 0 }

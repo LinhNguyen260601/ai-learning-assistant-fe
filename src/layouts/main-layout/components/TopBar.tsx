@@ -1,13 +1,4 @@
-import { useAuthStore } from '@/stores'
-import {
-  Avatar,
-  Badge,
-  Button,
-  Divider,
-  Dropdown,
-  Flex,
-  type MenuProps,
-} from 'antd'
+import { Avatar, Badge, Button, Divider, Dropdown, Flex } from 'antd'
 import { Header } from 'antd/es/layout/layout'
 import {
   ArrowLeftToLine,
@@ -16,6 +7,8 @@ import {
   LogOut,
   UserRound,
 } from 'lucide-react'
+import type { MenuProps } from 'antd'
+import { useAuthStore } from '@/stores'
 
 interface TopBarProps {
   collapsed: boolean

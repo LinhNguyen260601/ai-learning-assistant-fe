@@ -3,7 +3,7 @@ import type { Rule } from 'antd/es/form'
 export const MAX_DOCUMENT_TITLE_LENGTH = 100
 export const MAX_DOCUMENT_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
-export const DOCUMENT_TITLE_RULES: Rule[] = [
+export const DOCUMENT_TITLE_RULES: Array<Rule> = [
   { required: true, message: 'Please enter a document title' },
   {
     max: MAX_DOCUMENT_TITLE_LENGTH,
@@ -11,7 +11,7 @@ export const DOCUMENT_TITLE_RULES: Rule[] = [
   },
 ]
 
-export const DOCUMENT_FILE_RULES: Rule[] = [
+export const DOCUMENT_FILE_RULES: Array<Rule> = [
   { required: true, message: 'Please upload a PDF file' },
   {
     validator: (_, fileList) => {

@@ -1,5 +1,5 @@
-import formConfig from '@/integrations/antd/form-config'
 import { ConfigProvider } from 'antd'
+import formConfig from '@/integrations/antd/form-config'
 
 export const AntdConfigProvider = ({
   children,

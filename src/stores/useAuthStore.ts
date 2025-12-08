@@ -1,7 +1,7 @@
-import { authService } from '@/services'
-import type { User } from '@/types'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import type { User } from '@/types'
+import { authService } from '@/services'
 
 interface AuthStore {
   user: Omit<User, 'password'> | null
@@ -38,7 +38,7 @@ const useAuthStore = create<AuthStore>()(
         get isAuthenticated() {
           try {
             const state = get()
-            return !!state?.token
+            return !!state.token
           } catch {
             return false
           }

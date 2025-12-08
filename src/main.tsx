@@ -7,11 +7,11 @@ import * as TanStackQueryProvider from './integrations/tanstack-query/root-provi
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 
-import { AntdConfigProvider } from '@/integrations/antd/root-provider.tsx'
 import reportWebVitals from './reportWebVitals.ts'
+import type { MyRouterContext } from '@/routes/__root.tsx'
+import { AntdConfigProvider } from '@/integrations/antd/root-provider.tsx'
 import './styles.css'
 import useAuthStore from '@/stores/useAuthStore.ts'
-import type { MyRouterContext } from '@/routes/__root.tsx'
 import { Error, NotFound } from '@/pages/index.ts'
 
 const TanStackQueryProviderContext = TanStackQueryProvider.getContext()

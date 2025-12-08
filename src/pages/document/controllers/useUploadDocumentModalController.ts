@@ -1,10 +1,10 @@
-import { QUERY_KEY } from '@/constants'
-import { documentsService } from '@/services'
-import type { Document } from '@/types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import type { UploadFile, UploadProps } from 'antd'
 import { Form, message } from 'antd'
 import { useCallback, useEffect, useMemo } from 'react'
+import type { UploadFile, UploadProps } from 'antd'
+import type { Document } from '@/types'
+import { documentsService } from '@/services'
+import { QUERY_KEY } from '@/constants'
 
 const useUploadDocumentModalController = (
   onCancel: () => void,
@@ -34,8 +34,8 @@ const useUploadDocumentModalController = (
     })
 
   useEffect(() => {
-    if (isSuccess && document) {
-      const fileList: UploadFile[] = [
+    if (isSuccess) {
+      const fileList: Array<UploadFile> = [
         {
           uid: document._id,
           name: document.fileName,

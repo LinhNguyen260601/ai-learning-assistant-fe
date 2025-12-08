@@ -6,7 +6,7 @@ const NotFound = () => (
     status="404"
     title="404"
     subTitle="Sorry, the page you visited does not exist."
-    className="min-h-screen flex items-center justify-center flex-col"
+    className="mt-[10%]"
     extra={
       <Link to="/dashboard">
         <Button type="primary">Back to the Dashboard</Button>

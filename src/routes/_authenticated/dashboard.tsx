@@ -1,8 +1,8 @@
+import { createFileRoute } from '@tanstack/react-router'
 import { QUERY_KEY } from '@/constants'
 import { Dashboard } from '@/pages'
 import { DashboardSkeleton } from '@/pages/dashboard/components'
 import { dashboardService } from '@/services'
-import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/dashboard')({
   component: Dashboard,

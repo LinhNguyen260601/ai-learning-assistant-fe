@@ -13,7 +13,7 @@ export interface DashboardResponse {
     studyStreak: number
   }
   recentActivity: {
-    documents: Document[]
-    quizzes: Quiz[]
+    documents: Array<Document>
+    quizzes: Array<Quiz>
   }
 }

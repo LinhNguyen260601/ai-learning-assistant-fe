@@ -1,7 +1,7 @@
-import { useIsMobile, useToggle } from '@/hooks'
-import { useAuthStore } from '@/stores'
 import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect } from 'react'
+import { useIsMobile, useToggle } from '@/hooks'
+import { useAuthStore } from '@/stores'
 
 export const useMainLayoutController = () => {
   const navigate = useNavigate()

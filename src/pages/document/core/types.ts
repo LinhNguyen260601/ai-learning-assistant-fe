@@ -1,6 +1,6 @@
 import type { Document } from '@/types'
 
 export interface DocumentsResponse {
-  documents: Document[]
+  documents: Array<Document>
   count: number
 }
