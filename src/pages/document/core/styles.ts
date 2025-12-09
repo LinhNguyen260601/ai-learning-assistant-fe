@@ -1,3 +1,4 @@
+import type { CardClassNamesType } from 'antd/es/card/Card'
 import type { TextAreaProps } from 'antd/es/input/TextArea'
 
 export const draggerStyle: React.CSSProperties = {
@@ -27,3 +28,5 @@ export const textareaAutoSize: TextAreaProps['autoSize'] = {
   minRows: 1,
   maxRows: 4,
 }
+
+export const cardContainerClassNames: CardClassNamesType = { body: 'p-0!' }

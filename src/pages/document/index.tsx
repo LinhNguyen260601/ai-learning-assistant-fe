@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
 import { Button, Empty, Typography } from 'antd'
 import { Plus } from 'lucide-react'
 import type { DocumentsResponse } from '@/pages/document/core'
@@ -15,8 +14,6 @@ import { documentsService } from '@/services'
 const { Title, Text } = Typography
 
 const Document = () => {
-  const navigate = useNavigate()
-
   const {
     data: documentsResponse,
     isLoading: isLoadingDocumentsResponse,
@@ -33,7 +30,6 @@ const Document = () => {
 
   const handleCloseUploadModal = () => {
     close()
-    navigate({ to: '/documents' })
   }
 
   if (isLoadingDocumentsResponse || isRefetchingDocumentsResponse) {
@@ -43,7 +39,7 @@ const Document = () => {
   return (
     <main className="p-6">
       <header className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-        <div>
+        <article>
           <Title
             level={1}
             className="mb-2! text-2xl! font-bold! text-gray-900!"
@@ -53,7 +49,7 @@ const Document = () => {
           <Text className="text-base text-gray-500">
             Manage and organize your learning materials.
           </Text>
-        </div>
+        </article>
         <Button
           type="primary"
           size="large"
@@ -64,20 +60,18 @@ const Document = () => {
         </Button>
       </header>
 
-      <section>
-        {documents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {documents.map((document) => (
-              <DocumentCard key={document._id} document={document} />
-            ))}
-          </div>
-        ) : (
-          <Empty
-            description="No documents yet"
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-          />
-        )}
-      </section>
+      {documents.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {documents.map((document) => (
+            <DocumentCard key={document._id} document={document} />
+          ))}
+        </div>
+      ) : (
+        <Empty
+          description="No documents yet"
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+        />
+      )}
 
       <UploadDocumentModal
         open={isUploadModalOpen}
