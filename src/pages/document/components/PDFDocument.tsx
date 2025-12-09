@@ -12,7 +12,7 @@ const PDFDocument = ({ title, filePath }: PDFDocumentProps) => {
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-gray-50">
+    <div className="flex-1 flex flex-col bg-gray-50 border border-gray-200 rounded-lg">
       {/* Document Viewer Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
         <Typography.Text strong className="text-base">
@@ -34,7 +34,7 @@ const PDFDocument = ({ title, filePath }: PDFDocumentProps) => {
           <iframe
             src={`${filePath}#toolbar=1&navpanes=0&scrollbar=1`}
             title={title}
-            className="w-full border-0 h-[calc(100vh-200px)] min-h-[800px]"
+            className="w-full border-0 h-[calc(100vh-329px)]"
           />
         </div>
       </div>
