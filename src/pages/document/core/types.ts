@@ -28,3 +28,15 @@ export interface ChatResponse {
   relevantChunks: Array<number>
   chatHistoryId: string
 }
+
+export interface SummaryResponse {
+  documentId: string
+  title: string
+  summary: string
+}
+
+export interface ExplainConceptResponse {
+  concept: string
+  explanation: string
+  relevantChunks: Array<number>
+}
