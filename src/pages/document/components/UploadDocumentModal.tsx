@@ -1,13 +1,13 @@
-import { useUploadDocumentModalController } from '@/pages/document/controllers'
+import { useSearch } from '@tanstack/react-router'
+import { Button, Form, Input, Modal, Typography, Upload } from 'antd'
+import { Upload as UploadIcon } from 'lucide-react'
 import {
   DOCUMENT_FILE_RULES,
   DOCUMENT_TITLE_RULES,
   draggerStyle,
   uploadIconStyle,
 } from '@/pages/document/core'
-import { useSearch } from '@tanstack/react-router'
-import { Button, Form, Input, Modal, Typography, Upload } from 'antd'
-import { Upload as UploadIcon } from 'lucide-react'
+import { useUploadDocumentModalController } from '@/pages/document/controllers'
 
 const { Text } = Typography
 const { Dragger } = Upload
@@ -18,10 +18,8 @@ interface UploadDocumentModalProps {
 }
 
 const UploadDocumentModal = ({ open, onCancel }: UploadDocumentModalProps) => {
-  const search = useSearch({ from: '/_authenticated/documents' }) as {
-    documentId?: string
-  }
-  const documentId = search.documentId || ''
+  const search = useSearch({ from: '/_authenticated/documents' })
+  const documentId = (search as { documentId?: string }).documentId || ''
 
   const {
     form,

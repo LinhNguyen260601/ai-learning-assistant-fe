@@ -2,3 +2,4 @@ export { default as useUploadDocumentModalController } from './useUploadDocument
 export { default as useDocumentCardController } from './useDocumentCardController'
 export { default as useChatController } from './useChatController'
 export { default as useAiActionController } from './useAiActionController'
+export { default as useFlashcardSetCardController } from './useFlashcardSetCardController'

@@ -1,11 +1,11 @@
 import { message } from 'antd'
+import type { ChatHistoryResponse } from '@/pages/document/core'
 import type {
   ChatResponse,
   ExplainConceptResponse,
   SummaryResponse,
 } from '@/pages/document/core/types'
-import type { ChatHistoryResponse } from '@/pages/document/core'
-import type { ApiReponse } from '@/types'
+import type { ApiReponse, FlashcardSet } from '@/types'
 import { apiCall } from '@/utils'
 
 const AIService = {
@@ -49,6 +49,24 @@ const AIService = {
       url: '/ai/generate-summary',
       method: 'POST',
       data: payload,
+    })
+    if (!response?.success) throw new Error(response?.message)
+    message.success(response.message)
+    return response.data
+  },
+
+  generateFlashcards: async (payload: {
+    documentId: string
+    count?: number
+  }): Promise<FlashcardSet> => {
+    const { documentId, count = 10 } = payload
+    const response = await apiCall<
+      { documentId: string; count: number },
+      ApiReponse<FlashcardSet>
+    >({
+      url: '/ai/generate-flashcards',
+      method: 'POST',
+      data: { documentId, count },
     })
     if (!response?.success) throw new Error(response?.message)
     message.success(response.message)

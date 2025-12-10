@@ -6,12 +6,17 @@ import { Suspense, lazy, useMemo } from 'react'
 import type { TabsProps } from 'antd'
 import type { Document } from '@/types'
 import { documentsService } from '@/services'
-import { AIActionSkeleton, PDFDocument } from '@/pages/document/components'
+import {
+  AIActionSkeleton,
+  FlashCardLoading,
+  PDFDocument,
+} from '@/pages/document/components'
 import { QUERY_KEY } from '@/constants'
 import { cn } from '@/utils'
 
 const Chat = lazy(() => import('@/pages/document/components/Chat'))
 const AIAction = lazy(() => import('@/pages/document/components/AIAction'))
+const FlashCard = lazy(() => import('@/pages/document/components/FlashCard'))
 
 const DocumentDetails = () => {
   const navigate = useNavigate()
@@ -85,11 +90,9 @@ const DocumentDetails = () => {
         key: 'flashcards',
         label: 'Flashcards',
         children: (
-          <div className="flex-1 flex items-center justify-center">
-            <Typography.Text className="text-gray-500">
-              Flashcards feature coming soon
-            </Typography.Text>
-          </div>
+          <Suspense fallback={<FlashCardLoading />}>
+            <FlashCard />
+          </Suspense>
         ),
       },
       {
