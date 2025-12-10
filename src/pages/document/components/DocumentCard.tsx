@@ -1,9 +1,8 @@
-import { Link } from '@tanstack/react-router'
 import { Card, Modal, Tag, Typography } from 'antd'
 import { BookOpen, Clock, FileText, Lightbulb, Trash2 } from 'lucide-react'
 import type { Document } from '@/types'
-import { formatFileSize, formatRelativeTime } from '@/utils/format'
 import { useDocumentCardController } from '@/pages/document/controllers'
+import { formatFileSize, formatRelativeTime } from '@/utils/format'
 
 const { Title, Text } = Typography
 
@@ -21,7 +20,7 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
   } = useDocumentCardController(document._id)
 
   return (
-    <Link to="/documents/$id" params={{ id: document._id }}>
+    <>
       <Card className="shadow-sm hover:shadow-md transition-shadow cursor-pointer relative group">
         <button
           type="button"
@@ -91,7 +90,7 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
           This action cannot be undone.
         </p>
       </Modal>
-    </Link>
+    </>
   )
 }
 

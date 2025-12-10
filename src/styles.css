@@ -1,7 +1,32 @@
 @import 'tailwindcss';
 
 .ant-required-mark {
-  color: #ff4d4f;
+  color       : #ff4d4f;
   margin-right: 4px;
-  font-weight: 600;
+  font-weight : 600;
+}
+
+/* Center menu icons when sidebar is collapsed */
+.ant-layout-sider-collapsed .ant-menu-item {
+  display        : flex;
+  justify-content: center;
+  align-items    : center;
+  padding-left   : 0;
+  padding-right  : 0;
+  text-align     : center;
+}
+
+.ant-layout-sider-collapsed .ant-menu-item:not(:last-child) .ant-menu-item-icon {
+  margin-right   : 0;
+  margin-left    : 0;
+  display        : flex;
+  justify-content: center;
+  align-items    : center;
+  width          : 100%;
+  flex           : 0 0 auto;
+  transform      : translateX(50%);
+}
+
+.ant-layout-sider-collapsed .ant-menu-item:last-child .ant-menu-item-icon {
+  transform: translateX(100%);
 }

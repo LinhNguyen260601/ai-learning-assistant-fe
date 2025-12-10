@@ -30,3 +30,24 @@ export const textareaAutoSize: TextAreaProps['autoSize'] = {
 }
 
 export const cardContainerClassNames: CardClassNamesType = { body: 'p-0!' }
+
+export const flashcardContainerStyle: React.CSSProperties = {
+  perspective: '1000px',
+}
+
+export const flashcardStyle = (isFlipped: boolean): React.CSSProperties => ({
+  transformStyle: 'preserve-3d',
+  transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+  transition: 'transform 0.6s',
+})
+
+export const flashcardFrontStyle: React.CSSProperties = {
+  backfaceVisibility: 'hidden',
+  WebkitBackfaceVisibility: 'hidden',
+}
+
+export const flashcardBackStyleStyle: React.CSSProperties = {
+  backfaceVisibility: 'hidden',
+  WebkitBackfaceVisibility: 'hidden',
+  transform: 'rotateY(180deg)',
+}
