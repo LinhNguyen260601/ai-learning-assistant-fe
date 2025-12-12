@@ -34,3 +34,19 @@ export const DOCUMENT_FILE_RULES: Array<Rule> = [
     },
   },
 ]
+
+export const QUIZ_TITLE_RULES: Array<Rule> = [
+  { required: true, message: 'Please enter a title' },
+  {
+    max: MAX_DOCUMENT_TITLE_LENGTH,
+    message: `Title must be less than ${MAX_DOCUMENT_TITLE_LENGTH} characters`,
+  },
+]
+
+export const QUIZ_NUM_QUESTIONS_RULES: Array<Rule> = [
+  { required: true, message: 'Please enter a number of questions' },
+  {
+    min: 1,
+    message: 'Number of questions must be at least 1',
+  },
+]

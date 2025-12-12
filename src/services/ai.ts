@@ -73,6 +73,24 @@ const AIService = {
     return response.data
   },
 
+  generateQuiz: async (payload: {
+    documentId: string
+    numQuestions?: number
+    title: string
+  }): Promise<void> => {
+    const { documentId, numQuestions = 5, title } = payload
+    const response = await apiCall<
+      { documentId: string; numQuestions: number; title: string },
+      ApiReponse<FlashcardSet>
+    >({
+      url: '/ai/generate-quiz',
+      method: 'POST',
+      data: { documentId, numQuestions, title },
+    })
+    if (!response?.success) throw new Error(response?.message)
+    message.success(response.message)
+  },
+
   explainConcept: async (payload: {
     documentId: string
     concept: string

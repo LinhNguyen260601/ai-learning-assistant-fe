@@ -18,11 +18,11 @@ const MainLayout = () => {
   } = useMainLayoutController()
 
   return (
-    <Layout className="h-screen">
+    <Layout className="h-screen overflow-hidden">
       {/* Mobile overlay */}
       {isMobile && !collapsed && (
         <div
-          className="fixed inset-0 bg-black/50 z-[100] transition-opacity"
+          className="fixed inset-0 bg-black/50 z-100 transition-opacity"
           onClick={handleSidebarOpen}
           aria-hidden="true"
         />
@@ -34,7 +34,12 @@ const MainLayout = () => {
         onToggle={handleToggleSidebar}
         onMenuClick={handleMenuClick}
       />
-      <Layout className={cn(isMobile && !collapsed && 'ml-0')}>
+      <Layout
+        className={cn(
+          'flex flex-col h-full overflow-hidden',
+          isMobile && !collapsed && 'ml-0',
+        )}
+      >
         <TopBar
           collapsed={collapsed}
           onToggle={handleToggleSidebar}
@@ -42,7 +47,7 @@ const MainLayout = () => {
           onProfileClick={handleProfileClick}
           onNotificationClick={handleNotificationClick}
         />
-        <Content>
+        <Content className="flex-1 overflow-y-auto min-h-0">
           <Outlet />
         </Content>
       </Layout>
