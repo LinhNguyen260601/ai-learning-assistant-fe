@@ -3,3 +3,5 @@ export { default as useDocumentCardController } from './useDocumentCardControlle
 export { default as useChatController } from './useChatController'
 export { default as useAiActionController } from './useAiActionController'
 export { default as useFlashcardSetCardController } from './useFlashcardSetCardController'
+export { default as useQuizController } from './useQuizController'
+export { default as useQuizzesController } from './useQuizzesController'

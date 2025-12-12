@@ -13,10 +13,12 @@ import {
 } from '@/pages/document/components'
 import { QUERY_KEY } from '@/constants'
 import { cn } from '@/utils'
+import QuizLoading from '@/pages/document/components/QuizLoading'
 
 const Chat = lazy(() => import('@/pages/document/components/Chat'))
 const AIAction = lazy(() => import('@/pages/document/components/AIAction'))
 const FlashCard = lazy(() => import('@/pages/document/components/FlashCard'))
+const Quizzes = lazy(() => import('@/pages/document/components/Quizzes'))
 
 const DocumentDetails = () => {
   const navigate = useNavigate()
@@ -97,13 +99,11 @@ const DocumentDetails = () => {
       },
       {
         key: 'quiz',
-        label: 'Quiz',
+        label: 'Quizzes',
         children: (
-          <div className="flex-1 flex items-center justify-center">
-            <Typography.Text className="text-gray-500">
-              Quiz feature coming soon
-            </Typography.Text>
-          </div>
+          <Suspense fallback={<QuizLoading />}>
+            <Quizzes />
+          </Suspense>
         ),
       },
     ],
