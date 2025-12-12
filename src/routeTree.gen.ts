@@ -16,6 +16,9 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
 const RegisterLazyRouteImport = createFileRoute('/register')()
+const AuthenticatedFlashcardsLazyRouteImport = createFileRoute(
+  '/_authenticated/flashcards',
+)()
 const AuthenticatedDocumentsLazyRouteImport = createFileRoute(
   '/_authenticated/documents',
 )()
@@ -43,6 +46,14 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedFlashcardsLazyRoute =
+  AuthenticatedFlashcardsLazyRouteImport.update({
+    id: '/flashcards',
+    path: '/flashcards',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/flashcards/lazy').then((d) => d.Route),
+  )
 const AuthenticatedDocumentsLazyRoute =
   AuthenticatedDocumentsLazyRouteImport.update({
     id: '/documents',
@@ -88,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterLazyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents': typeof AuthenticatedDocumentsLazyRouteWithChildren
+  '/flashcards': typeof AuthenticatedFlashcardsLazyRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdLazyRoute
   '/quizzes/$id': typeof AuthenticatedQuizzesIdLazyRouteWithChildren
   '/quizzes/$id/results': typeof AuthenticatedQuizzesIdResultsLazyRoute
@@ -97,6 +109,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterLazyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents': typeof AuthenticatedDocumentsLazyRouteWithChildren
+  '/flashcards': typeof AuthenticatedFlashcardsLazyRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdLazyRoute
   '/quizzes/$id': typeof AuthenticatedQuizzesIdLazyRouteWithChildren
   '/quizzes/$id/results': typeof AuthenticatedQuizzesIdResultsLazyRoute
@@ -108,6 +121,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterLazyRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/documents': typeof AuthenticatedDocumentsLazyRouteWithChildren
+  '/_authenticated/flashcards': typeof AuthenticatedFlashcardsLazyRoute
   '/_authenticated/documents/$id': typeof AuthenticatedDocumentsIdLazyRoute
   '/_authenticated/quizzes/$id': typeof AuthenticatedQuizzesIdLazyRouteWithChildren
   '/_authenticated/quizzes/$id/results': typeof AuthenticatedQuizzesIdResultsLazyRoute
@@ -119,6 +133,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/dashboard'
     | '/documents'
+    | '/flashcards'
     | '/documents/$id'
     | '/quizzes/$id'
     | '/quizzes/$id/results'
@@ -128,6 +143,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/dashboard'
     | '/documents'
+    | '/flashcards'
     | '/documents/$id'
     | '/quizzes/$id'
     | '/quizzes/$id/results'
@@ -138,6 +154,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/_authenticated/dashboard'
     | '/_authenticated/documents'
+    | '/_authenticated/flashcards'
     | '/_authenticated/documents/$id'
     | '/_authenticated/quizzes/$id'
     | '/_authenticated/quizzes/$id/results'
@@ -171,6 +188,13 @@ declare module '@tanstack/react-router' {
       fullPath: ''
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/flashcards': {
+      id: '/_authenticated/flashcards'
+      path: '/flashcards'
+      fullPath: '/flashcards'
+      preLoaderRoute: typeof AuthenticatedFlashcardsLazyRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/documents': {
       id: '/_authenticated/documents'
@@ -242,12 +266,14 @@ const AuthenticatedQuizzesIdLazyRouteWithChildren =
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDocumentsLazyRoute: typeof AuthenticatedDocumentsLazyRouteWithChildren
+  AuthenticatedFlashcardsLazyRoute: typeof AuthenticatedFlashcardsLazyRoute
   AuthenticatedQuizzesIdLazyRoute: typeof AuthenticatedQuizzesIdLazyRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDocumentsLazyRoute: AuthenticatedDocumentsLazyRouteWithChildren,
+  AuthenticatedFlashcardsLazyRoute: AuthenticatedFlashcardsLazyRoute,
   AuthenticatedQuizzesIdLazyRoute: AuthenticatedQuizzesIdLazyRouteWithChildren,
 }
 

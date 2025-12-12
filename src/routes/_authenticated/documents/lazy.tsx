@@ -4,6 +4,7 @@ import {
   useLocation,
 } from '@tanstack/react-router'
 import { Document } from '@/pages'
+import { DocumentCardSkeleton } from '@/pages/document/components'
 
 export const Route = createLazyFileRoute('/_authenticated/documents')({
   component: () => {
@@ -11,4 +12,5 @@ export const Route = createLazyFileRoute('/_authenticated/documents')({
     if (pathname === '/documents') return <Document />
     return <Outlet />
   },
+  pendingComponent: DocumentCardSkeleton,
 })

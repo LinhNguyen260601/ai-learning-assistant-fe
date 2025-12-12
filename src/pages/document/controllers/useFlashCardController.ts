@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useParams } from '@tanstack/react-router'
-import { useCallback, useMemo, useState } from 'react'
+import { useNavigate, useParams, useSearch } from '@tanstack/react-router'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { FlashcardCard, FlashcardSetsResponse } from '@/types'
 import { QUERY_KEY } from '@/constants'
 import { useToggle } from '@/hooks'
@@ -12,9 +12,16 @@ const useFlashCardController = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedSetId, setSelectedSetId] = useState<string | null>(null)
 
+  const isManualNavigationRef = useRef(false)
+  const previousFlashcardSetIdRef = useRef<string | undefined>(undefined)
+
   const { id: documentId } = useParams({
     from: '/_authenticated/documents/$id',
   })
+  const navigate = useNavigate()
+  const search = useSearch({ from: '/_authenticated/documents/$id' })
+  const flashcardSetIdFromSearch = (search as { flashcardSetId?: string })
+    .flashcardSetId
   const queryClient = useQueryClient()
 
   const {
@@ -90,12 +97,58 @@ const useFlashCardController = () => {
   })
 
   const flashcardSets = flashcardSetsResponse?.flashcardSets || []
-  const count = flashcardSetsResponse?.count || 0
+
+  // Filter flashcard sets by documentId
+  const documentFlashcardSets = useMemo(
+    () => flashcardSets.filter((set) => set.documentId === documentId),
+    [flashcardSets, documentId],
+  )
+  const count = documentFlashcardSets.length
+
+  // Auto-select flashcard set from search params
+  useEffect(() => {
+    // Skip auto-selection if user manually navigated back to sets
+    if (isManualNavigationRef.current) {
+      isManualNavigationRef.current = false
+      previousFlashcardSetIdRef.current = flashcardSetIdFromSearch
+      return
+    }
+
+    const previousFlashcardSetId = previousFlashcardSetIdRef.current
+    previousFlashcardSetIdRef.current = flashcardSetIdFromSearch
+
+    // Only auto-select if:
+    // 1. flashcardSetIdFromSearch exists in URL
+    // 2. selectedSetId is null OR different from flashcardSetIdFromSearch
+    if (
+      flashcardSetIdFromSearch &&
+      selectedSetId !== flashcardSetIdFromSearch
+    ) {
+      const setExists = documentFlashcardSets.some(
+        (set) => set._id === flashcardSetIdFromSearch,
+      )
+      if (setExists) {
+        setSelectedSetId(flashcardSetIdFromSearch)
+        setCurrentIndex(0)
+        close()
+      }
+    }
+
+    if (!flashcardSetIdFromSearch && previousFlashcardSetId && selectedSetId) {
+      // Only clear selection if flashcardSetId was removed from URL
+      // (i.e., URL changed from having flashcardSetId to not having it)
+      setSelectedSetId(null)
+      setCurrentIndex(0)
+      close()
+    }
+  }, [flashcardSetIdFromSearch, selectedSetId, documentFlashcardSets, close])
 
   const selectedSet = useMemo(() => {
     if (!selectedSetId) return null
-    return flashcardSets.find((set) => set._id === selectedSetId) || null
-  }, [flashcardSets, selectedSetId])
+    return (
+      documentFlashcardSets.find((set) => set._id === selectedSetId) || null
+    )
+  }, [documentFlashcardSets, selectedSetId])
 
   const currentCard: FlashcardCard | undefined =
     selectedSet?.cards[currentIndex]
@@ -132,9 +185,18 @@ const useFlashCardController = () => {
   )
 
   const handleBackToSets = () => {
+    // Mark as manual navigation to prevent useEffect from auto-selecting
+    isManualNavigationRef.current = true
     setSelectedSetId(null)
     setCurrentIndex(0)
     close()
+    // Remove flashcardSetId from URL
+    navigate({
+      to: '/documents/$id',
+      params: { id: documentId },
+      search: { tab: 'flashcards' },
+      replace: true,
+    })
   }
 
   const handleCardClick = (setId: string) => () => {
@@ -162,7 +224,7 @@ const useFlashCardController = () => {
     handleBackToSets,
     handleCardClick,
     isLoadingData,
-    flashcardSets,
+    flashcardSets: documentFlashcardSets,
     count,
     selectedSet,
     handleGenerateFlashcards,
