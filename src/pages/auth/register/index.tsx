@@ -1,4 +1,4 @@
-import { PASSWORD_FORM_RULES, USER_FORM_RULES } from '@/pages/auth/login/core'
+import { PASSWORD_FORM_RULES, EMAIL_FORM_RULES } from '@/pages/auth/login/core'
 import {
   useRegisterController,
   USERNAME_FORM_RULES,
@@ -55,7 +55,7 @@ const Register = () => {
                 name="email"
                 required
                 label="Email"
-                rules={USER_FORM_RULES}
+                rules={EMAIL_FORM_RULES}
               >
                 <Input
                   placeholder="example@gmail.com"

@@ -1,6 +1,6 @@
 import type { Rule } from 'antd/es/form'
 
-export const USER_FORM_RULES: Array<Rule> = [
+export const EMAIL_FORM_RULES: Array<Rule> = [
   { required: true, message: 'Please enter your email' },
   { type: 'email', message: 'Please enter a valid email' },
 ]

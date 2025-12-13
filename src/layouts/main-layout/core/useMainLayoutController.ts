@@ -26,7 +26,9 @@ export const useMainLayoutController = () => {
 
   const handleNotificationClick = useCallback(() => {}, [])
 
-  const handleProfileClick = useCallback(() => {}, [])
+  const handleProfileClick = () => {
+    navigate({ to: '/profile', replace: true })
+  }
 
   const handleLogoutClick = () => {
     logout()

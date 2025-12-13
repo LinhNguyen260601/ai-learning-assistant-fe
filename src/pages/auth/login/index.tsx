@@ -4,7 +4,7 @@ import { UserRound } from 'lucide-react'
 import { hasFormErrors } from '@/utils'
 import {
   PASSWORD_FORM_RULES,
-  USER_FORM_RULES,
+  EMAIL_FORM_RULES,
   useLoginController,
 } from '@/pages/auth/login/core'
 
@@ -43,7 +43,7 @@ const Login = () => {
                 name="email"
                 required
                 label="Email"
-                rules={USER_FORM_RULES}
+                rules={EMAIL_FORM_RULES}
               >
                 <Input
                   placeholder="example@gmail.com"
