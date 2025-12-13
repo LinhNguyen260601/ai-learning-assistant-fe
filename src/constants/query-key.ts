@@ -7,4 +7,5 @@ export const QUERY_KEY = {
   QUIZZES: 'quizzes',
   QUIZ: 'quiz',
   QUIZ_RESULTS: 'quiz-results',
+  ME: 'me',
 } as const
