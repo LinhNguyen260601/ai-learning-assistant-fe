@@ -72,13 +72,19 @@ const Sidebar: React.FC<SidebarProps> = ({
       width={256}
       className={cn(
         'h-[calc(100vh-64px)]',
-        isMobile && 'fixed! left-0! top-0! z-[101] transition-transform!',
+        isMobile && 'fixed! left-0! top-0! z-50 transition-transform!',
         isMobile && collapsed && '-translate-x-full',
       )}
     >
       <header className="border-b border-r border-gray-200 bg-white h-16 flex items-center justify-between px-4">
         <figure className={cn('w-16', !isMobile && 'mx-auto')}>
-          <img src="/logo.webp" alt="logo" className="size-full object-cover" />
+          <img
+            src="/logo.webp"
+            alt="AI Learning Assistant logo"
+            className="size-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+          />
         </figure>
 
         {isMobile && (

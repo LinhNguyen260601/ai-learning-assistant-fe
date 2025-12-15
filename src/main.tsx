@@ -1,6 +1,6 @@
-import { RouterProvider, createRouter } from '@tanstack/react-router'
-import { StrictMode } from 'react'
+import { StrictMode, lazy } from 'react'
 import ReactDOM from 'react-dom/client'
+import { RouterProvider, createRouter } from '@tanstack/react-router'
 
 import * as TanStackQueryProvider from './integrations/tanstack-query/root-provider.tsx'
 
@@ -12,7 +12,14 @@ import type { MyRouterContext } from '@/routes/__root.tsx'
 import { AntdConfigProvider } from '@/integrations/antd/root-provider.tsx'
 import './styles.css'
 import useAuthStore from '@/stores/useAuthStore.ts'
-import { Error, NotFound } from '@/pages/index.ts'
+
+// Lazy load error components as they're not on the critical path
+const Error = lazy(() =>
+  import('@/pages/index.ts').then((module) => ({ default: module.Error })),
+)
+const NotFound = lazy(() =>
+  import('@/pages/index.ts').then((module) => ({ default: module.NotFound })),
+)
 
 const TanStackQueryProviderContext = TanStackQueryProvider.getContext()
 const router = createRouter({

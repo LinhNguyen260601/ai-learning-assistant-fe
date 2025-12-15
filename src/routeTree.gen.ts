@@ -13,7 +13,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
 const RegisterLazyRouteImport = createFileRoute('/register')()
 const AuthenticatedProfileLazyRouteImport = createFileRoute(
@@ -24,6 +23,9 @@ const AuthenticatedFlashcardsLazyRouteImport = createFileRoute(
 )()
 const AuthenticatedDocumentsLazyRouteImport = createFileRoute(
   '/_authenticated/documents',
+)()
+const AuthenticatedDashboardLazyRouteImport = createFileRoute(
+  '/_authenticated/dashboard',
 )()
 const AuthenticatedQuizzesIdLazyRouteImport = createFileRoute(
   '/_authenticated/quizzes/$id',
@@ -73,11 +75,14 @@ const AuthenticatedDocumentsLazyRoute =
   } as any).lazy(() =>
     import('./routes/_authenticated/documents/lazy').then((d) => d.Route),
   )
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
+const AuthenticatedDashboardLazyRoute =
+  AuthenticatedDashboardLazyRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/dashboard.lazy').then((d) => d.Route),
+  )
 const AuthenticatedQuizzesIdLazyRoute =
   AuthenticatedQuizzesIdLazyRouteImport.update({
     id: '/quizzes/$id',
@@ -108,7 +113,7 @@ const AuthenticatedQuizzesIdResultsLazyRoute =
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterLazyRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dashboard': typeof AuthenticatedDashboardLazyRoute
   '/documents': typeof AuthenticatedDocumentsLazyRouteWithChildren
   '/flashcards': typeof AuthenticatedFlashcardsLazyRoute
   '/profile': typeof AuthenticatedProfileLazyRoute
@@ -119,7 +124,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterLazyRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dashboard': typeof AuthenticatedDashboardLazyRoute
   '/documents': typeof AuthenticatedDocumentsLazyRouteWithChildren
   '/flashcards': typeof AuthenticatedFlashcardsLazyRoute
   '/profile': typeof AuthenticatedProfileLazyRoute
@@ -132,7 +137,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterLazyRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardLazyRoute
   '/_authenticated/documents': typeof AuthenticatedDocumentsLazyRouteWithChildren
   '/_authenticated/flashcards': typeof AuthenticatedFlashcardsLazyRoute
   '/_authenticated/profile': typeof AuthenticatedProfileLazyRoute
@@ -231,7 +236,7 @@ declare module '@tanstack/react-router' {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      preLoaderRoute: typeof AuthenticatedDashboardLazyRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/quizzes/$id': {
@@ -288,7 +293,7 @@ const AuthenticatedQuizzesIdLazyRouteWithChildren =
   )
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDashboardLazyRoute: typeof AuthenticatedDashboardLazyRoute
   AuthenticatedDocumentsLazyRoute: typeof AuthenticatedDocumentsLazyRouteWithChildren
   AuthenticatedFlashcardsLazyRoute: typeof AuthenticatedFlashcardsLazyRoute
   AuthenticatedProfileLazyRoute: typeof AuthenticatedProfileLazyRoute
@@ -296,7 +301,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDashboardLazyRoute: AuthenticatedDashboardLazyRoute,
   AuthenticatedDocumentsLazyRoute: AuthenticatedDocumentsLazyRouteWithChildren,
   AuthenticatedFlashcardsLazyRoute: AuthenticatedFlashcardsLazyRoute,
   AuthenticatedProfileLazyRoute: AuthenticatedProfileLazyRoute,

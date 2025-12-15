@@ -27,7 +27,7 @@ const Dashboard = () => {
         id: quiz._id,
         type: 'quiz',
         title: quiz.title,
-        date: new Date(quiz.completedAt),
+        date: new Date(quiz.completedAt ?? ''),
         color: 'green',
       })) as Array<ActivityItemProps>
 
@@ -78,7 +78,7 @@ const Dashboard = () => {
             <div className="size-8 rounded-full bg-gray-100 flex items-center justify-center">
               <Clock size={16} className="text-gray-600" />
             </div>
-            <Title level={4} className="mb-0! font-bold! text-gray-900!">
+            <Title level={2} className="mb-0! font-bold! text-gray-900!">
               Recent Activity
             </Title>
           </div>

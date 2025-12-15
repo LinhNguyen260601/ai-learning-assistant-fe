@@ -1,9 +1,5 @@
+import { Suspense, lazy } from 'react'
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
-import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-import type { TanStackDevtoolsReactPlugin } from '@tanstack/react-devtools'
-
 import type { QueryClient } from '@tanstack/react-query'
 import type { useAuthStore } from '@/stores'
 
@@ -12,39 +8,55 @@ export interface MyRouterContext {
   queryClient: QueryClient
 }
 
-const tanStackConfig:
-  | Partial<{
-      defaultOpen: boolean
-      hideUntilHover: boolean
-      position: 'bottom-right'
-      panelLocation: 'top' | 'bottom'
-      requireUrlFlag: boolean
-      urlFlag: string
-      theme: 'light' | 'dark'
-      triggerImage: string
-      triggerHidden?: boolean
-    }>
-  | undefined = {
-  position: 'bottom-right',
-}
+// Devtools are only loaded in development
+// Vite will tree-shake these imports in production builds
+const DevtoolsWrapper = () => {
+  if (import.meta.env.PROD) {
+    return null
+  }
 
-const tackStackDevtoolsPlugins: Array<TanStackDevtoolsReactPlugin> | undefined =
-  [
-    {
-      name: 'Tanstack Router',
-      render: <TanStackRouterDevtoolsPanel />,
-    },
-    TanStackQueryDevtools,
-  ]
+  // Lazy load devtools only in development
+  const Devtools = lazy(async () => {
+    const [
+      { TanStackDevtools },
+      { TanStackRouterDevtoolsPanel },
+      TanStackQueryDevtools,
+    ] = await Promise.all([
+      import('@tanstack/react-devtools'),
+      import('@tanstack/react-router-devtools'),
+      import('../integrations/tanstack-query/devtools'),
+    ])
+
+    return {
+      default: () => (
+        <TanStackDevtools
+          config={{
+            position: 'bottom-right',
+          }}
+          plugins={[
+            {
+              name: 'Tanstack Router',
+              render: <TanStackRouterDevtoolsPanel />,
+            },
+            TanStackQueryDevtools.default,
+          ]}
+        />
+      ),
+    }
+  })
+
+  return (
+    <Suspense fallback={null}>
+      <Devtools />
+    </Suspense>
+  )
+}
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
     <>
       <Outlet />
-      <TanStackDevtools
-        config={tanStackConfig}
-        plugins={tackStackDevtoolsPlugins}
-      />
+      <DevtoolsWrapper />
     </>
   ),
 })
