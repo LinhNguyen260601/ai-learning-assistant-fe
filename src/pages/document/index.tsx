@@ -1,8 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
-import { Button, Empty, Tooltip, Typography } from 'antd'
-import { Plus } from 'lucide-react'
-import type { DocumentsResponse } from '@/pages/document/core'
 import { QUERY_KEY } from '@/constants'
 import { useToggle } from '@/hooks'
 import {
@@ -10,7 +5,11 @@ import {
   DocumentCardSkeleton,
   UploadDocumentModal,
 } from '@/pages/document/components'
+import type { DocumentsResponse } from '@/pages/document/core'
 import { documentsService } from '@/services'
+import { useQuery } from '@tanstack/react-query'
+import { Button, Empty, Typography } from 'antd'
+import { Plus } from 'lucide-react'
 
 const { Title, Text } = Typography
 
@@ -64,14 +63,7 @@ const Document = () => {
       {documents.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
           {documents.map((document) => (
-            <Tooltip
-              key={document._id}
-              title={`Click to view details of ${document.title}`}
-            >
-              <Link to="/documents/$id" params={{ id: document._id }}>
-                <DocumentCard document={document} />
-              </Link>
-            </Tooltip>
+            <DocumentCard key={document._id} document={document} />
           ))}
         </div>
       ) : (

@@ -1,4 +1,6 @@
 import type { Rule } from 'antd/es/form'
+import isNil from 'lodash/isNil'
+import isEmpty from 'lodash/isEmpty'
 
 export const MAX_DOCUMENT_TITLE_LENGTH = 100
 export const MAX_DOCUMENT_FILE_SIZE = 10 * 1024 * 1024 // 10MB
@@ -46,7 +48,19 @@ export const QUIZ_TITLE_RULES: Array<Rule> = [
 export const QUIZ_NUM_QUESTIONS_RULES: Array<Rule> = [
   { required: true, message: 'Please enter a number of questions' },
   {
-    min: 1,
-    message: 'Number of questions must be at least 1',
+    validator: (_, value) => {
+      if (isNil(value) || isEmpty(value)) {
+        return Promise.resolve()
+      }
+
+      const numValue = Number(value)
+      if (isNaN(numValue) || numValue < 1) {
+        return Promise.reject(
+          new Error('Number of questions must be at least 1'),
+        )
+      }
+
+      return Promise.resolve()
+    },
   },
 ]
