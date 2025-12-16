@@ -45,19 +45,36 @@ const AuthService = {
     return response.data.user
   },
   updateMe: async (
-    payload: Partial<User>,
-  ): Promise<{ user: Omit<User, 'password'> }> => {
+    payload: Partial<User> & { profileImageFile?: File | null },
+  ): Promise<Omit<User, 'password'>> => {
+    const { profileImageFile, ...rest } = payload
+
+    const formData = new FormData()
+
+    Object.entries(rest).forEach(([key, value]) => {
+      formData.append(key, String(value))
+    })
+
+    if (profileImageFile) {
+      formData.append('profileImage', profileImageFile)
+    }
+
     const response = await apiCall<
-      Partial<User>,
+      FormData,
       ApiReponse<{ user: Omit<User, 'password'> }>
     >({
       url: '/auth/me',
       method: 'PATCH',
-      data: payload,
+      data: formData,
+      config: {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     })
     if (!response?.success) throw new Error(response?.message)
     message.success(response.message)
-    return response.data
+    return response.data.user
   },
   changePassword: async (payload: {
     currentPassword: string

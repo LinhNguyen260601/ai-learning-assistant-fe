@@ -27,6 +27,7 @@ const useChatController = () => {
     queryKey: [QUERY_KEY.CHAT_HISTORY, documentId],
     queryFn: () => aiService.getChatHistory(documentId),
     enabled: !!documentId,
+    retry: 0,
   })
 
   useEffect(() => {

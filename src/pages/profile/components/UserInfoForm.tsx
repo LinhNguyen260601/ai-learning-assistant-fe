@@ -1,14 +1,23 @@
+import { Avatar, Button, Card, Form, Input, Typography, Upload } from 'antd'
+import { Mail, Upload as UploadIcon, User } from 'lucide-react'
 import { EMAIL_FORM_RULES } from '@/pages/auth/login/core'
 import { USERNAME_FORM_RULES } from '@/pages/auth/register/core'
 import { UserInfoFormSkeleton } from '@/pages/profile/components/ProfileSkeleton'
 import { useUserInfoFormController } from '@/pages/profile/controllers'
 import { hasFormErrors } from '@/utils'
-import { Button, Card, Form, Input, Typography } from 'antd'
-import { Mail, User } from 'lucide-react'
 
 const UserInfoForm = () => {
-  const { form, user, isLoading, isUpdatingMe, onFinish } =
-    useUserInfoFormController()
+  const {
+    form,
+    user,
+    isLoading,
+    isUpdatingMe,
+    avatarPreview,
+    onFinish,
+    normalizeFile,
+    handleAvatarChange,
+    handleBeforeUpload,
+  } = useUserInfoFormController()
 
   if (isLoading) return <UserInfoFormSkeleton />
 
@@ -27,6 +36,28 @@ const UserInfoForm = () => {
         onFinish={onFinish}
         initialValues={user}
       >
+        <Form.Item
+          label="Profile Picture"
+          name="profileImageFile"
+          valuePropName="fileList"
+          getValueFromEvent={normalizeFile}
+        >
+          <Upload
+            accept="image/*"
+            maxCount={1}
+            beforeUpload={handleBeforeUpload}
+            showUploadList={false}
+            onChange={handleAvatarChange}
+          >
+            <div className="flex items-center gap-4">
+              <Avatar size={64} src={avatarPreview || user?.profileImage}>
+                {user?.username[0]?.toUpperCase()}
+              </Avatar>
+              <Button icon={<UploadIcon size={14} />}>Upload new photo</Button>
+            </div>
+          </Upload>
+        </Form.Item>
+
         <Form.Item
           label="Username"
           name="username"

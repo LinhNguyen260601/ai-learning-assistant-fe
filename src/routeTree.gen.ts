@@ -33,6 +33,9 @@ const AuthenticatedQuizzesIdLazyRouteImport = createFileRoute(
 const AuthenticatedDocumentsIdLazyRouteImport = createFileRoute(
   '/_authenticated/documents/$id',
 )()
+const AuthenticatedQuizzesIdIndexLazyRouteImport = createFileRoute(
+  '/_authenticated/quizzes/$id/',
+)()
 const AuthenticatedQuizzesIdResultsLazyRouteImport = createFileRoute(
   '/_authenticated/quizzes/$id/results',
 )()
@@ -99,6 +102,16 @@ const AuthenticatedDocumentsIdLazyRoute =
   } as any).lazy(() =>
     import('./routes/_authenticated/documents/$id.lazy').then((d) => d.Route),
   )
+const AuthenticatedQuizzesIdIndexLazyRoute =
+  AuthenticatedQuizzesIdIndexLazyRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedQuizzesIdLazyRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/quizzes/$id.index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 const AuthenticatedQuizzesIdResultsLazyRoute =
   AuthenticatedQuizzesIdResultsLazyRouteImport.update({
     id: '/results',
@@ -120,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/documents/$id': typeof AuthenticatedDocumentsIdLazyRoute
   '/quizzes/$id': typeof AuthenticatedQuizzesIdLazyRouteWithChildren
   '/quizzes/$id/results': typeof AuthenticatedQuizzesIdResultsLazyRoute
+  '/quizzes/$id/': typeof AuthenticatedQuizzesIdIndexLazyRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
@@ -129,8 +143,8 @@ export interface FileRoutesByTo {
   '/flashcards': typeof AuthenticatedFlashcardsLazyRoute
   '/profile': typeof AuthenticatedProfileLazyRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdLazyRoute
-  '/quizzes/$id': typeof AuthenticatedQuizzesIdLazyRouteWithChildren
   '/quizzes/$id/results': typeof AuthenticatedQuizzesIdResultsLazyRoute
+  '/quizzes/$id': typeof AuthenticatedQuizzesIdIndexLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -144,6 +158,7 @@ export interface FileRoutesById {
   '/_authenticated/documents/$id': typeof AuthenticatedDocumentsIdLazyRoute
   '/_authenticated/quizzes/$id': typeof AuthenticatedQuizzesIdLazyRouteWithChildren
   '/_authenticated/quizzes/$id/results': typeof AuthenticatedQuizzesIdResultsLazyRoute
+  '/_authenticated/quizzes/$id/': typeof AuthenticatedQuizzesIdIndexLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -157,6 +172,7 @@ export interface FileRouteTypes {
     | '/documents/$id'
     | '/quizzes/$id'
     | '/quizzes/$id/results'
+    | '/quizzes/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -166,8 +182,8 @@ export interface FileRouteTypes {
     | '/flashcards'
     | '/profile'
     | '/documents/$id'
-    | '/quizzes/$id'
     | '/quizzes/$id/results'
+    | '/quizzes/$id'
   id:
     | '__root__'
     | '/_authenticated'
@@ -180,6 +196,7 @@ export interface FileRouteTypes {
     | '/_authenticated/documents/$id'
     | '/_authenticated/quizzes/$id'
     | '/_authenticated/quizzes/$id/results'
+    | '/_authenticated/quizzes/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -253,6 +270,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDocumentsIdLazyRouteImport
       parentRoute: typeof AuthenticatedDocumentsLazyRoute
     }
+    '/_authenticated/quizzes/$id/': {
+      id: '/_authenticated/quizzes/$id/'
+      path: '/'
+      fullPath: '/quizzes/$id/'
+      preLoaderRoute: typeof AuthenticatedQuizzesIdIndexLazyRouteImport
+      parentRoute: typeof AuthenticatedQuizzesIdLazyRoute
+    }
     '/_authenticated/quizzes/$id/results': {
       id: '/_authenticated/quizzes/$id/results'
       path: '/results'
@@ -279,12 +303,14 @@ const AuthenticatedDocumentsLazyRouteWithChildren =
 
 interface AuthenticatedQuizzesIdLazyRouteChildren {
   AuthenticatedQuizzesIdResultsLazyRoute: typeof AuthenticatedQuizzesIdResultsLazyRoute
+  AuthenticatedQuizzesIdIndexLazyRoute: typeof AuthenticatedQuizzesIdIndexLazyRoute
 }
 
 const AuthenticatedQuizzesIdLazyRouteChildren: AuthenticatedQuizzesIdLazyRouteChildren =
   {
     AuthenticatedQuizzesIdResultsLazyRoute:
       AuthenticatedQuizzesIdResultsLazyRoute,
+    AuthenticatedQuizzesIdIndexLazyRoute: AuthenticatedQuizzesIdIndexLazyRoute,
   }
 
 const AuthenticatedQuizzesIdLazyRouteWithChildren =
