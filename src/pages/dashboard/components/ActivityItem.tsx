@@ -1,6 +1,5 @@
 import { Link } from '@tanstack/react-router'
 import { Button, Typography } from 'antd'
-import { useCallback } from 'react'
 import { cn, formatDate } from '@/utils'
 
 const { Text } = Typography
@@ -12,25 +11,24 @@ export interface ActivityItemProps {
   id: string
   title: string
   date: Date | null
+  documentId?: string
   color: ActivityColor
   type: ActivityType
 }
 
 const ActivityItem = ({ item }: { item: ActivityItemProps }) => {
-  const handleView = useCallback(() => {
-    // TODO: Navigate to item detail
-    console.log('View item:', item.id)
-  }, [item.id])
+  const isDocument = item.type === 'document'
 
   const getActivityText = () => {
-    if (item.type === 'document') return `Accessed Document: ${item.title}`
+    if (isDocument) return `Accessed Document: ${item.title}`
     return `Attempted Quiz: ${item.title}`
   }
 
   return (
     <Link
       to="/documents/$id"
-      params={{ id: item.id }}
+      params={{ id: isDocument ? item.id : (item.documentId ?? '') }}
+      search={{ tab: isDocument ? 'content' : 'quiz' }}
       className="flex items-start justify-between py-4 px-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
     >
       <div className="flex items-start gap-3 flex-1">
@@ -52,7 +50,6 @@ const ActivityItem = ({ item }: { item: ActivityItemProps }) => {
       <Button
         type="link"
         className="text-green-600 hover:text-green-700 p-0! h-auto! font-medium!"
-        onClick={handleView}
       >
         View
       </Button>

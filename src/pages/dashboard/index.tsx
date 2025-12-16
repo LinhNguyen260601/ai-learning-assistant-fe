@@ -26,6 +26,7 @@ const Dashboard = () => {
       const normarlizedQuizzes = res.recentActivity.quizzes.map((quiz) => ({
         id: quiz._id,
         type: 'quiz',
+        documentId: quiz.documentId,
         title: quiz.title,
         date: new Date(quiz.completedAt ?? ''),
         color: 'green',
