@@ -17,6 +17,7 @@ export const useMainLayoutController = () => {
   const handleToggleSidebar = () => toggle()
 
   const handleMenuClick = ({ key }: { key: string }) => {
+    if (isMobile) toggle()
     navigate({ to: key })
   }
 

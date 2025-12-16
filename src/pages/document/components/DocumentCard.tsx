@@ -1,8 +1,9 @@
-import { Card, Modal, Tag, Typography } from 'antd'
+import { Card, Modal, Tag, Tooltip, Typography } from 'antd'
 import { BookOpen, Clock, FileText, Lightbulb, Trash2 } from 'lucide-react'
 import type { Document } from '@/types'
 import { useDocumentCardController } from '@/pages/document/controllers'
 import { formatFileSize, formatRelativeTime } from '@/utils/format'
+import { Link } from '@tanstack/react-router'
 
 const { Title, Text } = Typography
 
@@ -31,47 +32,56 @@ const DocumentCard = ({ document }: DocumentCardProps) => {
           <Trash2 size={18} />
         </button>
 
-        <div className="flex gap-4">
-          <div className="w-16 h-16 rounded-lg bg-linear-to-br from-blue-400 to-blue-500 flex items-center justify-center shrink-0">
-            <FileText size={32} className="text-white" />
-          </div>
-
-          <div className="flex-1 min-w-0">
-            <Title
-              level={4}
-              className="mb-2! text-lg! font-bold! text-gray-900!"
-            >
-              {document.title}
-            </Title>
-            <Text className="text-sm text-gray-500 block mb-3">
-              {formatFileSize(document.fileSize)}
-            </Text>
-
-            <div className="flex flex-wrap gap-2 mb-3">
-              <Tag
-                color="purple"
-                icon={<BookOpen size={14} />}
-                className="flex! items-center gap-1"
-              >
-                {document.flashcardCount || 0} Flashcards
-              </Tag>
-              <Tag
-                color="green"
-                icon={<Lightbulb size={14} />}
-                className="flex! items-center gap-1"
-              >
-                {document.quizCount || 0} Quizzes
-              </Tag>
+        <Tooltip
+          key={document._id}
+          title={`Click to view details of ${document.title}`}
+        >
+          <Link
+            to="/documents/$id"
+            params={{ id: document._id }}
+            className="flex gap-4"
+          >
+            <div className="w-16 h-16 rounded-lg bg-linear-to-br from-blue-400 to-blue-500 flex items-center justify-center shrink-0">
+              <FileText size={32} className="text-white" />
             </div>
 
-            <div className="flex items-center gap-1 text-xs text-gray-500">
-              <Clock size={14} />
-              <Text className="text-xs text-gray-500">
-                Uploaded {formatRelativeTime(new Date(document.uploadDate))}
+            <div className="flex-1 min-w-0">
+              <Title
+                level={4}
+                className="mb-2! text-lg! font-bold! text-gray-900!"
+              >
+                {document.title}
+              </Title>
+              <Text className="text-sm text-gray-500 block mb-3">
+                {formatFileSize(document.fileSize)}
               </Text>
+
+              <div className="flex flex-wrap gap-2 mb-3">
+                <Tag
+                  color="purple"
+                  icon={<BookOpen size={14} />}
+                  className="flex! items-center gap-1"
+                >
+                  {document.flashcardCount || 0} Flashcards
+                </Tag>
+                <Tag
+                  color="green"
+                  icon={<Lightbulb size={14} />}
+                  className="flex! items-center gap-1"
+                >
+                  {document.quizCount || 0} Quizzes
+                </Tag>
+              </div>
+
+              <div className="flex items-center gap-1 text-xs text-gray-500">
+                <Clock size={14} />
+                <Text className="text-xs text-gray-500">
+                  Uploaded {formatRelativeTime(new Date(document.uploadDate))}
+                </Text>
+              </div>
             </div>
-          </div>
-        </div>
+          </Link>
+        </Tooltip>
       </Card>
 
       <Modal
