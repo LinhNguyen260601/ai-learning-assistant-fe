@@ -6,10 +6,7 @@ export const Route = createFileRoute('/login')({
   beforeLoad: () => {
     const token = getAuthToken()
     if (token) {
-      throw redirect({
-        to: '/dashboard',
-        replace: true,
-      })
+      throw redirect({ to: '/', replace: true })
     }
   },
   component: Login,

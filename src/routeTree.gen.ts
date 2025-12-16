@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as IndexRouteImport } from './routes/index'
 
 const RegisterLazyRouteImport = createFileRoute('/register')()
 const AuthenticatedProfileLazyRouteImport = createFileRoute(
@@ -52,6 +53,11 @@ const LoginRoute = LoginRouteImport.update({
 } as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedProfileLazyRoute =
@@ -124,6 +130,7 @@ const AuthenticatedQuizzesIdResultsLazyRoute =
   )
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterLazyRoute
   '/dashboard': typeof AuthenticatedDashboardLazyRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/quizzes/$id/': typeof AuthenticatedQuizzesIdIndexLazyRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterLazyRoute
   '/dashboard': typeof AuthenticatedDashboardLazyRoute
@@ -148,6 +156,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterLazyRoute
@@ -163,6 +172,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/login'
     | '/register'
     | '/dashboard'
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
     | '/quizzes/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/login'
     | '/register'
     | '/dashboard'
@@ -186,6 +197,7 @@ export interface FileRouteTypes {
     | '/quizzes/$id'
   id:
     | '__root__'
+    | '/'
     | '/_authenticated'
     | '/login'
     | '/register'
@@ -200,6 +212,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterLazyRoute: typeof RegisterLazyRoute
@@ -226,6 +239,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/profile': {
@@ -339,6 +359,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterLazyRoute: RegisterLazyRoute,
