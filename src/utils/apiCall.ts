@@ -63,6 +63,7 @@ export const apiCall = async <TRequest = any, TResponse = any>({
     const response = await request()
     return response.data
   } catch (error) {
+    console.log(isShowError)
     if (isShowError)
       message.open({
         type: 'error',

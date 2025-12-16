@@ -1,5 +1,5 @@
-import { ChangePasswordForm, UserInfoForm } from '@/pages/profile/components'
 import { Typography } from 'antd'
+import { ChangePasswordForm, UserInfoForm } from '@/pages/profile/components'
 
 const Profile = () => {
   return (

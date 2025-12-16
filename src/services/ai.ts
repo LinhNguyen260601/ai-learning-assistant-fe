@@ -18,6 +18,7 @@ const AIService = {
     >({
       url: `/ai/chat-history/${documentId}`,
       method: 'GET',
+      isShowError: false,
     })
     if (!response?.success) throw new Error(response?.message)
     return response.data

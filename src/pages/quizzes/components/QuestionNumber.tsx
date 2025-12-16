@@ -30,6 +30,7 @@ const QuestionNumber: React.FC<QuestionNumberProps> = ({
 
         return (
           <button
+            key={index}
             type="button"
             onClick={onQuestionNumberClick(index)}
             className={cn(
